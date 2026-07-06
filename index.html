@@ -3,21 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Xコンサルツール</title>
+<title>Xりさーちつーる🦔</title>
 <style>
   :root {
     --bg: #f7f7f8; --card: #fff; --border: #e3e3e6; --text: #1c1c1e; --sub: #6b6b70;
-    --accent: #1d9bf0; --accent-dark: #1682c9; --danger: #e0245e; --pin: #e8b400;
+    --accent: #1d9bf0; --accent-dark: #1682c9; --danger: #e0245e;
   }
   * { box-sizing: border-box; }
   body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif; background: var(--bg); color: var(--text); }
   header { background: var(--card); border-bottom: 1px solid var(--border); padding: .8rem 1rem; position: sticky; top: 0; z-index: 10; }
-  header h1 { font-size: 1.05rem; margin: 0 0 .6rem; }
-  nav { display: flex; gap: .4rem; flex-wrap: wrap; }
+  header h1 { font-size: 1.05rem; margin: 0 0 .6rem; text-align: center; }
+  nav { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: center; }
   nav button { border: 1px solid var(--border); background: var(--bg); color: var(--sub); padding: .45rem .9rem; border-radius: 999px; font-size: .85rem; cursor: pointer; }
   nav button.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
-  .backup { display: flex; gap: .4rem; margin-top: .5rem; }
-  .backup button, .backup label { font-size: .75rem; color: var(--sub); background: none; border: 1px solid var(--border); padding: .3rem .6rem; border-radius: 6px; cursor: pointer; }
+  .backup { display: flex; align-items: center; gap: .5rem; margin-top: .5rem; flex-wrap: wrap; }
+  .backup button, .backup label { font-size: .75rem; color: var(--sub); background: none; border: 1px solid var(--border); padding: .3rem .6rem; border-radius: 6px; cursor: pointer; white-space: nowrap; }
+  .backup-note { flex: 1; font-size: .72rem; color: var(--sub); line-height: 1.4; }
   main { max-width: 760px; margin: 0 auto; padding: 1rem; padding-bottom: 4rem; }
   section.tab { display: none; }
   section.tab.active { display: block; }
@@ -40,26 +41,37 @@
   .list-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: .8rem .9rem; margin-bottom: .6rem; }
   .list-item .meta { display: flex; justify-content: space-between; align-items: center; font-size: .78rem; color: var(--sub); margin-bottom: .35rem; flex-wrap: wrap; gap: .3rem; }
   .list-item .body { white-space: pre-wrap; font-size: .9rem; line-height: 1.5; margin-bottom: .5rem; }
-  .tag-pill { display: inline-block; background: #eef6fd; color: var(--accent-dark); border-radius: 999px; padding: .1rem .55rem; font-size: .74rem; margin-right: .25rem; }
-  .status-pill { display: inline-block; border-radius: 999px; padding: .1rem .55rem; font-size: .74rem; background: #f0f0f2; color: var(--sub); }
-  .status-pill.buzz { background: #fff2d6; color: #a5720a; }
+  .tag-pill { display: inline-flex; align-items: center; gap: .3rem; background: #eef6fd; color: var(--accent-dark); border-radius: 999px; padding: .1rem .3rem .1rem .55rem; font-size: .74rem; margin: 0 .25rem .25rem 0; }
+  .tag-pill button { background: none; border: none; color: inherit; cursor: pointer; padding: 0; font-size: .8rem; line-height: 1; opacity: .6; }
+  .tag-pill button:hover { opacity: 1; }
+  .tag-row { display: flex; flex-wrap: wrap; align-items: center; margin-bottom: .5rem; }
+  .tag-suggest-row { display: flex; flex-wrap: wrap; gap: .3rem; margin-bottom: .5rem; }
+  .tag-suggest { background: none; border: 1px dashed #c7dcee; color: var(--accent-dark); border-radius: 999px; padding: .1rem .6rem; font-size: .74rem; cursor: pointer; }
+  .tag-suggest:hover { background: #eef6fd; }
+  .post-comment { border: 1px dashed var(--border); background: #fffdf5; min-height: 3rem; font-size: .82rem; margin-bottom: .6rem; }
+  .comment-block { background: #fffdf5; border: 1px dashed #e8dcb0; border-radius: 8px; padding: .5rem .6rem; font-size: .82rem; color: #7a6a2a; white-space: pre-wrap; margin-top: .4rem; }
   .item-actions { display: flex; gap: .4rem; justify-content: flex-end; }
   .empty { color: var(--sub); font-size: .85rem; text-align: center; padding: 1.5rem 0; }
-  .pin-btn { background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--border); }
-  .pin-btn.pinned { color: var(--pin); }
   .tag-manage-item { display: flex; justify-content: space-between; align-items: center; padding: .5rem .2rem; border-bottom: 1px solid var(--border); font-size: .88rem; }
   .tag-manage-item:last-child { border-bottom: none; }
   .tag-count { color: var(--sub); font-size: .78rem; }
-  footer.note { text-align: center; color: var(--sub); font-size: .75rem; margin-top: 1.5rem; }
+  .facet-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem; margin-bottom: .6rem; }
+  .facet-head h3 { margin: 0; }
+  .facet-actions { display: flex; gap: .4rem; }
+  .facet-actions button { font-size: .75rem; padding: .3rem .6rem; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .chip { background: var(--bg); border: 1px solid var(--border); color: var(--sub); border-radius: 999px; padding: .3rem .8rem; font-size: .8rem; cursor: pointer; }
+  .chip.chip-active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
   a { color: var(--accent-dark); }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Xコンサルツール</h1>
+  <h1>Xりさーちつーる🦔</h1>
   <nav id="tabNav"></nav>
   <div class="backup">
+    <span class="backup-note">データはこのブラウザのlocalStorageにのみ保存されます。端末・ブラウザを変えたら「エクスポート」→別環境で「インポート」で引き継いでください。</span>
     <button id="exportBtn">⬇ 全データJSONエクスポート</button>
     <label for="importFile">⬆ インポート
       <input type="file" id="importFile" accept="application/json" style="display:none">
@@ -74,21 +86,8 @@
     <div class="card">
       <h3>投稿を追加</h3>
       <form class="entry-form" id="postForm">
-        <div class="row">
-          <input type="text" id="postAccount" placeholder="アカウント名（例: こぐにー）">
-          <input type="date" id="postDate">
-        </div>
-        <input type="url" id="postUrl" placeholder="投稿URL（任意・貼るとアカウント名を自動推測）">
-        <textarea id="postText" placeholder="投稿本文を貼り付け"></textarea>
-        <div class="row">
-          <input type="text" id="postTags" placeholder="タグ（カンマ区切り）">
-          <select id="postStatus">
-            <option value="未処理">未処理</option>
-            <option value="確認済み">確認済み</option>
-            <option value="使用予定">使用予定</option>
-          </select>
-          <label class="chk"><input type="checkbox" id="postBuzz"> バズった投稿</label>
-        </div>
+        <input type="url" id="postUrl" placeholder="投稿URL（貼るとアカウント名を自動取得）">
+        <textarea id="postText" placeholder="投稿本文を貼り付け" style="min-height:12rem"></textarea>
         <div class="actions">
           <button type="button" class="ghost" id="postCancelEdit" style="display:none">編集キャンセル</button>
           <button type="submit" class="primary">追加</button>
@@ -106,9 +105,8 @@
     <div class="card">
       <h3>メモを追加</h3>
       <form class="entry-form" id="memoForm">
-        <input type="text" id="memoTitle" placeholder="タイトル（例: こぐにーさんネタ一覧）">
+        <input type="text" id="memoTitle" placeholder="タイトル（例: 分析プロンプト）">
         <textarea id="memoContent" placeholder="内容" style="min-height:8rem"></textarea>
-        <input type="text" id="memoTags" placeholder="タグ（カンマ区切り）">
         <div class="actions">
           <button type="button" class="ghost" id="memoCancelEdit" style="display:none">編集キャンセル</button>
           <button type="submit" class="primary">追加</button>
@@ -124,7 +122,7 @@
   <section class="tab" data-tab="tag">
     <div class="card">
       <h3>タグ辞書</h3>
-      <p style="color:var(--sub); font-size:.85rem; margin:0 0 .7rem">Xタブ・メモタブで使われているタグの一覧。ここで直接タグを新規登録することもできる（使い回す前提のタグを先に用意したいとき用）。</p>
+      <p style="color:var(--sub); font-size:.85rem; margin:0 0 .7rem">Xタブの投稿で使われているタグの一覧。ここで直接タグを新規登録することもできる（使い回す前提のタグを先に用意したいとき用）。</p>
       <form class="entry-form" id="tagForm">
         <div class="row">
           <input type="text" id="tagName" placeholder="新しいタグ名">
@@ -136,27 +134,38 @@
   </section>
 
   <section class="tab" data-tab="research">
+    <p style="color:var(--sub); font-size:.85rem; margin:.2rem 0 .8rem">Xタブに入力した投稿を、アカウント・タグで絞り込んで出力する場所。該当する投稿をまとめてコピーしてAIに渡せる。</p>
     <div class="card">
-      <h3>リサーチを追加</h3>
-      <form class="entry-form" id="researchForm">
-        <input type="text" id="researchTitle" placeholder="タイトル（例: 競合アカウント調査）">
-        <input type="url" id="researchUrl" placeholder="URL">
-        <input type="text" id="researchCategories" placeholder="カテゴリ（カンマ区切り）">
-        <div class="actions">
-          <button type="button" class="ghost" id="researchCancelEdit" style="display:none">編集キャンセル</button>
-          <button type="submit" class="primary">追加</button>
+      <div class="facet-head">
+        <h3>アカウントで絞り込み</h3>
+        <div class="facet-actions">
+          <button type="button" class="ghost" id="accSelectAll">全選択</button>
+          <button type="button" class="ghost" id="accSelectNone">全解除</button>
         </div>
-      </form>
+      </div>
+      <div class="chip-row" id="accountChips"></div>
     </div>
-    <div class="filters">
-      <input type="text" id="researchFilterText" placeholder="タイトル・カテゴリで検索">
+    <div class="card">
+      <div class="facet-head">
+        <h3>タグで絞り込み</h3>
+        <div class="facet-actions">
+          <button type="button" class="ghost" id="tagSelectAll">全選択</button>
+          <button type="button" class="ghost" id="tagSelectNone">全解除</button>
+        </div>
+      </div>
+      <div class="chip-row" id="tagChips"></div>
+    </div>
+    <div class="card">
+      <div class="facet-head">
+        <h3>該当する投稿（<span id="matchCount">0</span>件）</h3>
+        <button type="button" class="primary" id="copyMatchedBtn">📋 クリップボードにコピー</button>
+      </div>
     </div>
     <div id="researchList"></div>
   </section>
 
 </main>
 
-<footer class="note">データはこのブラウザのlocalStorageにのみ保存されます。端末・ブラウザを変えたら「エクスポート」→別環境で「インポート」で引き継いでください。</footer>
 
 <script>
 (function () {
@@ -171,7 +180,7 @@
   ];
 
   function emptyState() {
-    return { version: 1, posts: [], memos: [], tags: [], research: [] };
+    return { version: 1, posts: [], memos: [], tags: [] };
   }
 
   function load() {
@@ -193,9 +202,13 @@
   let state = load();
   let editingPostId = null;
   let editingMemoId = null;
-  let editingResearchId = null;
+  let selectedAccounts = new Set();
+  let selectedTags = new Set();
+  let knownAccounts = new Set();
+  let knownTags = new Set();
 
   const uid = () => Date.now().toString() + Math.floor(Math.random() * 1000);
+  const todayStr = () => new Date().toISOString().slice(0, 10);
 
   function parseTags(str) {
     return str.split(",").map(s => s.trim()).filter(Boolean);
@@ -273,12 +286,18 @@
       el.className = "list-item";
       el.innerHTML = `
         <div class="meta">
-          <span>${p.accountId ? "@" + escapeHtml(p.accountId) : "アカウント未設定"} ・ ${escapeHtml(fmtDate(p.date))}</span>
-          <span class="status-pill ${p.buzz ? "buzz" : ""}">${p.buzz ? "🔥 " : ""}${escapeHtml(p.status || "未処理")}</span>
+          <span>${p.accountId ? "@" + escapeHtml(p.accountId) : "アカウント不明"} ・ ${escapeHtml(fmtDate(p.date))}</span>
         </div>
         <div class="body">${escapeHtml(p.rawText || "")}</div>
         ${p.url ? `<div style="margin-bottom:.5rem"><a href="${escapeAttr(p.url)}" target="_blank" rel="noopener">元投稿を開く ↗</a></div>` : ""}
-        <div>${(p.tags || []).map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join("")}</div>
+        <div class="tag-row">
+          ${(p.tags || []).map(t => `<span class="tag-pill">${escapeHtml(t)}<button data-action="remove-post-tag" data-id="${p.id}" data-tag="${escapeAttr(t)}">×</button></span>`).join("")}
+        </div>
+        ${state.tags.filter(t => !(p.tags || []).includes(t)).length ? `
+        <div class="tag-suggest-row">
+          ${state.tags.filter(t => !(p.tags || []).includes(t)).map(t => `<button type="button" class="tag-suggest" data-action="add-post-tag" data-id="${p.id}" data-tag="${escapeAttr(t)}">+ ${escapeHtml(t)}</button>`).join("")}
+        </div>` : ""}
+        <textarea class="post-comment" data-id="${p.id}" placeholder="コメント（バズった理由など・任意）">${escapeHtml(p.comment || "")}</textarea>
         <div class="item-actions">
           <button class="ghost" data-action="edit-post" data-id="${p.id}">編集</button>
           <button class="ghost danger" data-action="delete-post" data-id="${p.id}">削除</button>
@@ -286,6 +305,7 @@
       `;
       list.appendChild(el);
     });
+    renderResearch();
   }
 
   document.getElementById("postForm").addEventListener("submit", e => {
@@ -293,43 +313,24 @@
     const rawText = document.getElementById("postText").value.trim();
     if (!rawText) { alert("投稿本文を入力してください"); return; }
     const url = document.getElementById("postUrl").value.trim();
-    const tags = parseTags(document.getElementById("postTags").value);
-    registerTags(tags);
-    const data = {
-      accountId: document.getElementById("postAccount").value.trim() || extractAccountFromUrl(url),
-      date: document.getElementById("postDate").value,
-      url,
-      rawText,
-      tags,
-      status: document.getElementById("postStatus").value,
-      buzz: document.getElementById("postBuzz").checked,
-    };
+    const accountId = extractAccountFromUrl(url);
     if (editingPostId) {
       const idx = state.posts.findIndex(p => p.id === editingPostId);
-      if (idx !== -1) state.posts[idx] = Object.assign(state.posts[idx], data);
+      if (idx !== -1) Object.assign(state.posts[idx], { url, rawText, accountId });
       editingPostId = null;
       document.getElementById("postCancelEdit").style.display = "none";
     } else {
-      state.posts.push(Object.assign({ id: uid() }, data));
+      state.posts.push({ id: uid(), url, rawText, accountId, date: todayStr(), tags: [] });
     }
     save();
     e.target.reset();
     renderPosts();
-    renderTags();
   });
 
   document.getElementById("postCancelEdit").addEventListener("click", () => {
     editingPostId = null;
     document.getElementById("postForm").reset();
     document.getElementById("postCancelEdit").style.display = "none";
-  });
-
-  document.getElementById("postUrl").addEventListener("blur", e => {
-    const acc = document.getElementById("postAccount");
-    if (!acc.value.trim()) {
-      const guessed = extractAccountFromUrl(e.target.value.trim());
-      if (guessed) acc.value = guessed;
-    }
   });
 
   document.getElementById("postList").addEventListener("click", e => {
@@ -344,16 +345,30 @@
       const p = state.posts.find(p => p.id === id);
       if (!p) return;
       editingPostId = id;
-      document.getElementById("postAccount").value = p.accountId || "";
-      document.getElementById("postDate").value = p.date || "";
       document.getElementById("postUrl").value = p.url || "";
       document.getElementById("postText").value = p.rawText || "";
-      document.getElementById("postTags").value = (p.tags || []).join(", ");
-      document.getElementById("postStatus").value = p.status || "未処理";
-      document.getElementById("postBuzz").checked = !!p.buzz;
       document.getElementById("postCancelEdit").style.display = "inline-block";
       window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (btn.dataset.action === "remove-post-tag") {
+      const p = state.posts.find(p => p.id === id);
+      if (!p) return;
+      p.tags = (p.tags || []).filter(t => t !== btn.dataset.tag);
+      save(); renderPosts();
+    } else if (btn.dataset.action === "add-post-tag") {
+      const p = state.posts.find(p => p.id === id);
+      if (!p) return;
+      p.tags = p.tags || [];
+      if (!p.tags.includes(btn.dataset.tag)) p.tags.push(btn.dataset.tag);
+      save(); renderPosts();
     }
+  });
+
+  document.getElementById("postList").addEventListener("focusout", e => {
+    if (!e.target.classList.contains("post-comment")) return;
+    const p = state.posts.find(p => p.id === e.target.dataset.id);
+    if (!p) return;
+    p.comment = e.target.value;
+    save();
   });
 
   document.getElementById("postFilterText").addEventListener("input", renderPosts);
@@ -381,8 +396,8 @@
       el.innerHTML = `
         <div class="meta"><strong style="color:var(--text); font-size:.92rem">${escapeHtml(m.title || "（無題）")}</strong></div>
         <div class="body">${escapeHtml(m.content || "")}</div>
-        <div>${(m.tags || []).map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join("")}</div>
         <div class="item-actions">
+          <button class="ghost" data-action="copy-memo-with-research" data-id="${m.id}">📋 リサーチ結果を付けてコピー</button>
           <button class="ghost" data-action="edit-memo" data-id="${m.id}">編集</button>
           <button class="ghost danger" data-action="delete-memo" data-id="${m.id}">削除</button>
         </div>
@@ -395,12 +410,9 @@
     e.preventDefault();
     const content = document.getElementById("memoContent").value.trim();
     if (!content) { alert("内容を入力してください"); return; }
-    const tags = parseTags(document.getElementById("memoTags").value);
-    registerTags(tags);
     const data = {
       title: document.getElementById("memoTitle").value.trim(),
       content,
-      tags,
     };
     if (editingMemoId) {
       const idx = state.memos.findIndex(m => m.id === editingMemoId);
@@ -413,7 +425,6 @@
     save();
     e.target.reset();
     renderMemos();
-    renderTags();
   });
 
   document.getElementById("memoCancelEdit").addEventListener("click", () => {
@@ -422,7 +433,7 @@
     document.getElementById("memoCancelEdit").style.display = "none";
   });
 
-  document.getElementById("memoList").addEventListener("click", e => {
+  document.getElementById("memoList").addEventListener("click", async e => {
     const btn = e.target.closest("button[data-action]");
     if (!btn) return;
     const id = btn.dataset.id;
@@ -436,9 +447,16 @@
       editingMemoId = id;
       document.getElementById("memoTitle").value = m.title || "";
       document.getElementById("memoContent").value = m.content || "";
-      document.getElementById("memoTags").value = (m.tags || []).join(", ");
       document.getElementById("memoCancelEdit").style.display = "inline-block";
       window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (btn.dataset.action === "copy-memo-with-research") {
+      const m = state.memos.find(m => m.id === id);
+      if (!m) return;
+      const researchText = buildResearchText();
+      if (!researchText) alert("リサーチタブで該当する投稿がありません。プロンプトのみコピーします。");
+      const combined = researchText ? `${m.content}\n\n${researchText}` : m.content;
+      await copyToClipboard(combined);
+      flashButton(btn, "✓ コピーしました");
     }
   });
 
@@ -446,9 +464,7 @@
 
   // ---------- Tag dictionary ----------
   function tagUsageCount(tag) {
-    const inPosts = state.posts.filter(p => (p.tags || []).includes(tag)).length;
-    const inMemos = state.memos.filter(m => (m.tags || []).includes(tag)).length;
-    return inPosts + inMemos;
+    return state.posts.filter(p => (p.tags || []).includes(tag)).length;
   }
 
   function renderTags() {
@@ -483,7 +499,7 @@
     save();
     input.value = "";
     renderTags();
-    renderPostTagFilter();
+    renderPosts();
   });
 
   document.getElementById("tagList").addEventListener("click", e => {
@@ -492,105 +508,155 @@
     const tag = btn.dataset.tag;
     const count = tagUsageCount(tag);
     const msg = count > 0
-      ? `「${tag}」はX/メモで${count}件使われています。タグ辞書から削除しても各投稿・メモに付いたタグ自体は残ります。削除しますか？`
+      ? `「${tag}」はXタブの投稿で${count}件使われています。タグ辞書から削除しても各投稿に付いたタグ自体は残ります。削除しますか？`
       : `「${tag}」を削除しますか？`;
     if (!confirm(msg)) return;
     state.tags = state.tags.filter(t => t !== tag);
     save();
     renderTags();
-    renderPostTagFilter();
+    renderPosts();
   });
 
-  // ---------- Research ----------
-  function renderResearch() {
-    const list = document.getElementById("researchList");
-    const textFilter = document.getElementById("researchFilterText").value.trim().toLowerCase();
-    let items = [...state.research].sort((a, b) => {
-      if (!!b.pinned !== !!a.pinned) return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
-      return b.id.localeCompare(a.id);
+  // ---------- Research (Xタブのデータをアカウント・タグで絞り込んで出力) ----------
+  function getPostAccounts() {
+    const set = new Set(state.posts.map(p => p.accountId || "(不明)"));
+    return [...set].sort((a, b) => a.localeCompare(b, "ja"));
+  }
+
+  function getPostTagValues() {
+    const set = new Set();
+    state.posts.forEach(p => {
+      if (p.tags && p.tags.length) p.tags.forEach(t => set.add(t));
+      else set.add("(タグなし)");
     });
-    if (textFilter) {
-      items = items.filter(r =>
-        (r.title || "").toLowerCase().includes(textFilter) ||
-        (r.categories || []).some(c => c.toLowerCase().includes(textFilter))
-      );
+    return [...set].sort((a, b) => a.localeCompare(b, "ja"));
+  }
+
+  function syncFacetKnown(known, selected, current) {
+    current.forEach(v => {
+      if (!known.has(v)) {
+        known.add(v);
+        selected.add(v);
+      }
+    });
+  }
+
+  function computeMatchedPosts() {
+    return state.posts.filter(p => {
+      const acc = p.accountId || "(不明)";
+      if (!selectedAccounts.has(acc)) return false;
+      const tags = (p.tags && p.tags.length) ? p.tags : ["(タグなし)"];
+      return tags.some(t => selectedTags.has(t));
+    });
+  }
+
+  function renderChipRow(containerId, values, selectedSet, kind) {
+    const container = document.getElementById(containerId);
+    if (!values.length) {
+      container.innerHTML = '<span class="empty" style="padding:0">Xタブに投稿がありません</span>';
+      return;
     }
-    if (!items.length) {
-      list.innerHTML = '<div class="empty">まだリサーチ項目がありません</div>';
+    container.innerHTML = "";
+    values.forEach(v => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "chip" + (selectedSet.has(v) ? " chip-active" : "");
+      btn.textContent = v;
+      btn.dataset.kind = kind;
+      btn.dataset.value = v;
+      container.appendChild(btn);
+    });
+  }
+
+  function renderResearch() {
+    const allAccounts = getPostAccounts();
+    const allTags = getPostTagValues();
+    syncFacetKnown(knownAccounts, selectedAccounts, allAccounts);
+    syncFacetKnown(knownTags, selectedTags, allTags);
+
+    renderChipRow("accountChips", allAccounts, selectedAccounts, "account");
+    renderChipRow("tagChips", allTags, selectedTags, "tag");
+
+    const matched = computeMatchedPosts().sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+    document.getElementById("matchCount").textContent = matched.length;
+
+    const list = document.getElementById("researchList");
+    if (!matched.length) {
+      list.innerHTML = '<div class="empty">条件に合う投稿がありません</div>';
       return;
     }
     list.innerHTML = "";
-    items.forEach(r => {
+    matched.forEach(p => {
       const el = document.createElement("div");
       el.className = "list-item";
       el.innerHTML = `
-        <div class="meta">
-          <span><strong style="color:var(--text)">${escapeHtml(r.title || "（無題）")}</strong></span>
-          <button class="pin-btn ${r.pinned ? "pinned" : ""}" data-action="toggle-pin" data-id="${r.id}" title="ピン留め">📌</button>
-        </div>
-        ${r.url ? `<div style="margin-bottom:.4rem"><a href="${escapeAttr(r.url)}" target="_blank" rel="noopener">${escapeHtml(r.url)}</a></div>` : ""}
-        <div>${(r.categories || []).map(c => `<span class="tag-pill">${escapeHtml(c)}</span>`).join("")}</div>
-        <div class="item-actions">
-          <button class="ghost" data-action="edit-research" data-id="${r.id}">編集</button>
-          <button class="ghost danger" data-action="delete-research" data-id="${r.id}">削除</button>
-        </div>
+        <div class="meta"><span>${p.accountId ? "@" + escapeHtml(p.accountId) : "アカウント不明"} ・ ${escapeHtml(fmtDate(p.date))}</span></div>
+        <div class="body">${escapeHtml(p.rawText || "")}</div>
+        ${p.comment && p.comment.trim() ? `<div class="comment-block">💬 ${escapeHtml(p.comment.trim())}</div>` : ""}
+        <div>${(p.tags || []).map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join("")}</div>
       `;
       list.appendChild(el);
     });
   }
 
-  document.getElementById("researchForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const title = document.getElementById("researchTitle").value.trim();
-    const url = document.getElementById("researchUrl").value.trim();
-    if (!title && !url) { alert("タイトルかURLのどちらかを入力してください"); return; }
-    const categories = parseTags(document.getElementById("researchCategories").value);
-    const data = { title, url, categories };
-    if (editingResearchId) {
-      const idx = state.research.findIndex(r => r.id === editingResearchId);
-      if (idx !== -1) state.research[idx] = Object.assign(state.research[idx], data);
-      editingResearchId = null;
-      document.getElementById("researchCancelEdit").style.display = "none";
-    } else {
-      state.research.push(Object.assign({ id: uid(), pinned: false }, data));
+  function buildResearchText() {
+    const matched = computeMatchedPosts().sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+    if (!matched.length) return "";
+    return matched.map(p => {
+      const acc = p.accountId ? "@" + p.accountId : "アカウント不明";
+      const tags = (p.tags || []).join(", ");
+      let block = `--- ${acc}（${p.date || "日付不明"}）${tags ? "[" + tags + "]" : ""} ---\n【本文】\n${p.rawText || ""}`;
+      if (p.comment && p.comment.trim()) block += `\n【コメント】\n${p.comment.trim()}`;
+      return block;
+    }).join("\n\n");
+  }
+
+  async function copyToClipboard(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (err) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
     }
-    save();
-    e.target.reset();
+  }
+
+  function flashButton(btn, label) {
+    const original = btn.textContent;
+    btn.textContent = label || "✓ コピーしました";
+    setTimeout(() => { btn.textContent = original; }, 1500);
+  }
+
+  function toggleChip(kind, value) {
+    const set = kind === "account" ? selectedAccounts : selectedTags;
+    if (set.has(value)) set.delete(value); else set.add(value);
     renderResearch();
-  });
+  }
 
-  document.getElementById("researchCancelEdit").addEventListener("click", () => {
-    editingResearchId = null;
-    document.getElementById("researchForm").reset();
-    document.getElementById("researchCancelEdit").style.display = "none";
+  document.getElementById("accountChips").addEventListener("click", e => {
+    const btn = e.target.closest("button.chip");
+    if (btn) toggleChip("account", btn.dataset.value);
   });
-
-  document.getElementById("researchList").addEventListener("click", e => {
-    const btn = e.target.closest("button[data-action]");
-    if (!btn) return;
-    const id = btn.dataset.id;
-    if (btn.dataset.action === "delete-research") {
-      if (!confirm("このリサーチ項目を削除しますか？")) return;
-      state.research = state.research.filter(r => r.id !== id);
-      save(); renderResearch();
-    } else if (btn.dataset.action === "edit-research") {
-      const r = state.research.find(r => r.id === id);
-      if (!r) return;
-      editingResearchId = id;
-      document.getElementById("researchTitle").value = r.title || "";
-      document.getElementById("researchUrl").value = r.url || "";
-      document.getElementById("researchCategories").value = (r.categories || []).join(", ");
-      document.getElementById("researchCancelEdit").style.display = "inline-block";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else if (btn.dataset.action === "toggle-pin") {
-      const r = state.research.find(r => r.id === id);
-      if (!r) return;
-      r.pinned = !r.pinned;
-      save(); renderResearch();
-    }
+  document.getElementById("tagChips").addEventListener("click", e => {
+    const btn = e.target.closest("button.chip");
+    if (btn) toggleChip("tag", btn.dataset.value);
   });
+  document.getElementById("accSelectAll").addEventListener("click", () => { selectedAccounts = new Set(getPostAccounts()); renderResearch(); });
+  document.getElementById("accSelectNone").addEventListener("click", () => { selectedAccounts = new Set(); renderResearch(); });
+  document.getElementById("tagSelectAll").addEventListener("click", () => { selectedTags = new Set(getPostTagValues()); renderResearch(); });
+  document.getElementById("tagSelectNone").addEventListener("click", () => { selectedTags = new Set(); renderResearch(); });
 
-  document.getElementById("researchFilterText").addEventListener("input", renderResearch);
+  document.getElementById("copyMatchedBtn").addEventListener("click", async () => {
+    const text = buildResearchText();
+    if (!text) { alert("該当する投稿がありません"); return; }
+    await copyToClipboard(text);
+    flashButton(document.getElementById("copyMatchedBtn"));
+  });
 
   // ---------- backup ----------
   document.getElementById("exportBtn").addEventListener("click", () => {
@@ -646,7 +712,6 @@
   renderNav();
   const savedTab = localStorage.getItem("xConsulToolActiveTab") || "x";
   switchTab(TABS.some(t => t.id === savedTab) ? savedTab : "x");
-  document.getElementById("postDate").value = new Date().toISOString().slice(0, 10);
   renderAll();
 })();
 </script>
